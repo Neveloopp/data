@@ -1,0 +1,194 @@
+const Z͓̽̏͂̈kͯͩ͊ͧ̅rͤ̉ͬͥ̀̚ = (() => {
+    const ȸ̃̅̏ͭ̂ = new Map([
+        ['Ṿͤ̌͒̓̚', 'let'], ['Ḑ̔͊͛̇̾', 'const'], ['Fͦͮͨ̍͊', 'function'],
+        ['⟦͑̆̐ͣͭ⟧', '[]'], ['⦃ͣ̾̓͌̇⦄', '{}'], ['⟅̉͗ͪ̓̚⟆', '()'],
+        ['↻ͩ̌͒̅', 'for'], ['⇶ͬ̍ͣ', 'while'], ['⊢͑ͮ̉', 'if'],
+        ['⊣͊ͭ̃', 'else'], ['⤇͒̓', 'return'], ['≋͌ͥ', '==='],
+        ['≇ͣ̾', '!=='], ['∧ͩ͊', '&&'], ['∨ͮ̃', '||'],
+        ['⊤͒̚', 'true'], ['⊥̓ͣ', 'false'], ['∅ͭ̉', 'null']
+    ]);
+
+    const Ƞ͗̆͛ͦ = (() => {
+        const Ƀͭ̓ͪ = new Uint8Array(256);
+        for (let i = 0; i < 256; i++) Ƀͭ̓ͪ[i] = i;
+        for (let i = 255; i > 0; i--) {
+            const Ʉͣ̃ͮ = Math.floor(Math.random() * (i + 1));
+            [Ƀͭ̓ͪ[i], Ƀͭ̓ͪ[Ʉͣ̃ͮ]] = [Ƀͭ̓ͪ[Ʉͣ̃ͮ], Ƀͭ̓ͪ[i]];
+        }
+        return Ƀͭ̓ͪ;
+    })();
+
+    const Ɇͥ͑̚ = (ɇ͗̆, Ɉ̃͊) => {
+        let ɉͭ̓ = '';
+        for (let i = 0; i < ɇ͗̆.length; i++) {
+            const Ɋͣ = ɇ͗̆.charCodeAt(i);
+            const ɋ̃ = Ɉ̃͊[i % Ɉ̃͊.length].charCodeAt(0);
+            ɉͭ̓ += String.fromCharCode((Ɋͣ + ɋ̃ + Ƞ͗̆͛ͦ[(i + ɋ̃) % 256]) % 65536);
+        }
+        return btoa(ɉͭ̓).split('').reverse().join('$') + '⟐' + Ɉ̃͊;
+    };
+
+    const Ɍͮ = (ɍͭ, Ɏ̃) => {
+        const [ɏͣ, ɐ̆] = ɍͭ.split('⟐');
+        const ɑ͗ = atob(ɏͣ.split('$').reverse().join(''));
+        let ɒ͊ = '';
+        for (let i = 0; i < ɑ͗.length; i++) {
+            const ɕͮ = ɑ͗.charCodeAt(i);
+            const ɖ͑ = ɐ̆[i % ɐ̆.length].charCodeAt(0);
+            ɒ͊ += String.fromCharCode((ɕͮ - ɖ͑ - Ƞ͗̆͛ͦ[(i + ɖ͑) % 256] + 131072) % 65536);
+        }
+        return ɒ͊;
+    };
+
+    class Ȼͤ̓͑ {
+        static #ɘ͗ = new WeakMap();
+        constructor(ə͊) {
+            Ȼͤ̓͑.#ɘ͗.set(this, ə͊);
+        }
+        ɚͭ() {
+            const ɜ̃ = Ȼͤ̓͑.#ɘ͗.get(this);
+            return fetch(Ɍͮ(ɜ̃, 'ɝͣ' + Date.now().toString(36)))
+                .then(ɞ̆ => ɞ̆[ɟ͊]())
+                .catch(() => ({ 'ɠͮ': 'ɡ͑' }));
+        }
+        static ɢͭ(ɣ͊, ɤ̆) {
+            const ɥͮ = Ɇͥ͑̚(ɣ͊, 'ɦ͑' + Math.random().toString(36).substr(2, 9));
+            return new Ȼͤ̓͑(ɥͮ);
+        }
+    }
+
+    const ɧ̃ = {
+        'ɨͣ': (ɪ̆, ɫͮ) => {
+            const ɬ͑ = new AbortController();
+            setTimeout(() => ɬ͑.abort(), 10000);
+            return fetch(Ɍͮ(ɪ̆, 'ɭͭ' + performance.now()), {
+                signal: ɬ͑.signal,
+                headers: { 
+                    'X-ɮ̃': 'ɯͣ' + btoa(navigator.userAgent).substr(5, 15),
+                    'X-ɰ̆': 'ɱͮ' + Date.now().toString(32)
+                },
+                ...ɫͮ
+            }).then(ɲ͑ => ɲ͑[ɳͭ]());
+        },
+        'ɴ̃': (ɵͣ, ɶ̆) => {
+            const ɷͮ = Ɇͥ͑̚(JSON.stringify(ɶ̆), 'ɸ͑');
+            return ɧ̃['ɨͣ'](ɵͣ, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/ɹͭ' },
+                body: ɷͮ
+            });
+        },
+        'ɺ̃': (ɻͣ, ɼ̆) => {
+            const ɽͮ = new FormData();
+            Object.entries(ɼ̆).forEach(([ɾ͑, ʂͭ]) => {
+                ɽͮ.append(Ɇͥ͑̚(ɾ͑, 'ʃ̃'), Ɇͥ͑̚(ʂͭ, 'ʄͣ'));
+            });
+            return fetch(Ɍͮ(ɻͣ, 'ʅ̆' + crypto.getRandomValues(new Uint8Array(3)).join('')), {
+                method: 'POST',
+                body: ɽͮ,
+                headers: { 'X-ʆͮ': 'ʇ͑' }
+            });
+        }
+    };
+
+    const ʈͭ = (ʉ̃) => {
+        let ʊͣ = ʉ̃;
+        Array.from(ȸ̃̅̏ͭ̂.entries()).forEach(([ʋ̆, ʌͮ]) => {
+            ʊͣ = ʊͣ.replace(new RegExp(`\\${ʋ̆}`, 'g'), ʌͮ);
+        });
+        
+        const Ɂ͑ = Array.from({ length: 26 }, (_, i) => 
+            String.fromCharCode(0x1D00 + i) + String.fromCharCode(0x0300 + Math.floor(Math.random() * 16))
+        );
+        
+        Ɂ͑.forEach((ʂͭ, ʃ̃) => {
+            ʊͣ = ʊͣ.replace(new RegExp(`\\b${String.fromCharCode(97 + ʃ̃)}\\b`, 'g'), ʂͭ);
+        });
+
+        const ʄͣ = Math.random().toString(36).substr(2, 8);
+        const ʅ̆ = Math.random().toString(36).substr(2, 8);
+        
+        ʊͣ = ʊͣ.replace(/fetch/g, ʄͣ);
+        ʊͣ = ʊͣ.replace(/XMLHttpRequest/g, ʅ̆);
+        
+        const ʆͮ = `
+            const ${ʄͣ} = ${ɧ̃['ɨͣ'].toString()};
+            const ${ʅ̆} = ${Ȼͤ̓͑.toString()};
+            const ʇ͑ = ${ɧ̃['ɴ̃'].toString()};
+            const ʈͭ = ${ɧ̃['ɺ̃'].toString()};
+            
+            (() => {
+                const ʉ̃ = performance.now();
+                try {
+                    ${ʊͣ}
+                } catch(ʊͣ) {
+                    console.error('ʋ̆:', ʊͣ);
+                }
+                return performance.now() - ʉ̃;
+            })();
+        `;
+        
+        return ʆͮ;
+    };
+
+    const ʌͮ = (ʍ̃) => {
+        try {
+            const ʔͣ = ʈͭ(ʍ̃);
+            const ʕ̆ = new Function(ʔͣ);
+            return ʕ̆();
+        } catch (ʖͮ) {
+            throw new Error(`ʗ͑${ʖͮ.message}`);
+        }
+    };
+
+    if (typeof window !== 'undefined') {
+        const ʘͭ = document.currentScript;
+        const ʙ̃ = performance.now().toString(36);
+        
+        Object.defineProperty(window, `_${ʙ̃}`, {
+            value: { ʈͭ, ʌͮ, ɧ̃, Ȼͤ̓͑ },
+            writable: false,
+            configurable: false
+        });
+
+        const ʚͣ = Array.from(document.querySelectorAll('script[type="application/x-ʛ̆"]'));
+        ʚͣ.forEach(ʜͮ => {
+            if (ʜͮ.textContent) {
+                setTimeout(() => ʌͮ(ʜͮ.textContent), Math.random() * 100);
+            }
+            if (ʜͮ.src) {
+                fetch(ʜͮ.src + '?' + Date.now())
+                    .then(ʝ͑ => ʝ͑.text())
+                    .then(ʞͭ => {
+                        const ʟ̃ = Math.random() * 500;
+                        setTimeout(() => ʌͮ(ʞͭ), ʟ̃);
+                    });
+            }
+        });
+
+        const ʠͣ = new MutationObserver((ʡ̆) => {
+            ʡ̆.forEach((ʢͮ) => {
+                Array.from(ʢͮ.addedNodes).forEach((ʣ͑) => {
+                    if (ʣ͑.tagName === 'SCRIPT' && 
+                        ʣ͑.getAttribute('type') === 'application/x-ʛ̆') {
+                        if (ʣ͑.textContent) {
+                            setTimeout(() => ʌͮ(ʣ͑.textContent), Math.random() * 200);
+                        }
+                    }
+                });
+            });
+        });
+
+        ʠͣ.observe(document.documentElement, { 
+            childList: true, 
+            subtree: true 
+        });
+    }
+
+    return {
+        ʤͭ: ʈͭ,
+        ʥ̃: ʌͮ,
+        ʦͣ: ȸ̃̅̏ͭ̂,
+        ʧ̆: 'ɀͮ.ʨ͑.ʩͭ'
+    };
+})();
